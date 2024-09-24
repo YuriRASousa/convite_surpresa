@@ -1,0 +1,112 @@
+/* Reset de margens e padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif; /* Fonte legível */
+  background: #4B0E24; /* Fundo vinho escuro */
+  color: #D1C5C8; /* Texto em cinza claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #D6B1A4; /* Borda dourada suave */
+}
+
+header h1 {
+  font-family: 'Great Vibes', cursive; /* Fonte romântica para o título */
+  font-size: 36px;
+  color: #F2B6C4; /* Rosa suave */
+}
+
+header p {
+  font-size: 18px;
+  color: #D1C5C8; /* Texto secundário em cinza claro */
+  margin-bottom: 30px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Layout responsivo */
+  gap: 20px;
+}
+
+.gallery-item {
+  background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente para os itens */
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.gallery-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-item img,
+.gallery-item video {
+  max-width: 100%;
+  height: auto; /* Responsividade para imagens e vídeos */
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.gallery-item p {
+  font-family: 'Roboto', sans-serif; /* Fonte para as legendas */
+  font-size: 20px;
+  color: #e2d6d9; /* Rosa suave para legendas */
+}
+
+/* Ajustes para telas menores */
+@media screen and (max-width: 768px) {
+  header h1 {
+    font-size: 28px;
+  }
+
+  header p {
+    font-size: 16px;
+  }
+
+  .gallery-item p {
+    font-size: 18px;
+  }
+}
+.back-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #D6B1A4; /* Cor do botão */
+  color: white;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: 'Dancing Script', cursive;
+  text-decoration: none; /* Remove o sublinhado */
+  margin-top: 20px; /* Espaço acima do botão */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Efeito de transição */
+}
+
+.back-button:hover {
+  background-color: #F2B6C4; /* Cor ao passar o mouse */
+  transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
+}
+a {
+  text-decoration: none; /* Remove o sublinhado */
+  color: inherit; /* Herda a cor do texto ao redor */
+}
+
