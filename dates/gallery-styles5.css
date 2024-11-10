@@ -1,0 +1,210 @@
+/* Estilos gerais */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+  color: #333;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: relative; /* Necessário para o posicionamento absoluto do ícone */
+}
+
+header .header-content {
+  display: flex;
+  justify-content: center; /* Centraliza o h1 */
+  align-items: center;
+}
+
+header .header-icon {
+  position: absolute; /* Posiciona o ícone no canto esquerdo */
+  left: 20px; /* Ajuste a distância do ícone do canto esquerdo */
+  top: 50%; /* Alinha verticalmente o ícone ao centro */
+  transform: translateY(-50%); /* Compensa o deslocamento para centralizar verticalmente */
+  width: 80px;
+  height: auto;
+}
+
+header h1 {
+  font-size: 36px;
+  margin: 0;
+  padding-left: 60px; /* Adiciona espaço à esquerda do título para não sobrepor o ícone */
+}
+
+header .subtitle {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+/* Jornada de Passeio */
+.journey {
+  width: 90%;
+  margin: 40px auto;
+}
+
+.journey-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.journey-item .journey-text {
+  width: 45%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.journey-item .journey-text h2 {
+  color: #000;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.journey-item .journey-text p {
+  color: #555;
+  font-size: 16px;
+}
+
+.journey-item .journey-images {
+  width: 45%;
+}
+
+.journey-item .journey-images img {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Galeria */
+.gallery {
+  width: 90%;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.gallery h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.photo-gallery img {
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.photo-gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Rodapé */
+footer {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  margin-top: 40px;
+}
+
+footer .back-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #e7e7e7;
+  color: #000000;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+footer .back-btn:hover {
+  background-color: #cfcfcf;
+}
+
+/* Responsividade apenas no Header */
+@media (max-width: 768px) {
+  header {
+    display: flex;
+    justify-content: flex-start; /* Coloca o ícone no início */
+    align-items: center;
+    padding-left: 20px; /* Garante que o ícone não grude na borda */
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: center; /* Centraliza o título */
+    align-items: center;
+    flex-grow: 1; /* Garante que o título ocupe o espaço restante */
+  }
+
+  header .header-icon {
+    width: 10vw; /* Ajuste dinâmico com base na largura da tela */
+    height: auto;
+    margin-right: 20px; /* Distância entre o ícone e o título */
+  }
+
+  header h1 {
+    font-size: 28px; /* Tamanho do título reduzido para telas pequenas */
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    display: flex;
+    justify-content: flex-start; /* Garante que o ícone fique no começo */
+    align-items: center;
+    padding-left: 15px; /* Mais espaço à esquerda em telas menores */
+  }
+
+  header .header-icon {
+    width: 12vw; /* Ajuste o tamanho do ícone para telas muito pequenas */
+    height: auto;
+    margin-right: 15px; /* Distância entre o ícone e o título */
+  }
+
+  header h1 {
+    font-size: 24px; /* Reduz o tamanho do título ainda mais em telas pequenas */
+    text-align: center;
+  }
+}
+/* Responsividade */
+@media (max-width: 768px) {
+  .journey-item {
+      flex-direction: column;
+  }
+
+  .journey-item .journey-text, .journey-item .journey-images {
+      width: 100%;
+      margin-bottom: 20px;
+  }
+
+  .photo-gallery {
+      grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-gallery {
+      grid-template-columns: 1fr;
+  }
+}

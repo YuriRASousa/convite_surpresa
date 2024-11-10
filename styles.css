@@ -1,83 +1,124 @@
 /* Reset de margens e padding */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Dancing Script', cursive; /* Fonte romântica */
-    background: linear-gradient(to right, #ffdde1, #ee9ca7); /* Gradiente suave, tons de rosa */
-    color: #5a5a5a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .container {
-    background: #fff0f5; /* Fundo suave em tons de rosa */
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra para criar destaque */
-    max-width: 600px;
-    text-align: center;
-    border: 2px solid #ffc3c3; /* Borda fina e elegante */
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Dancing Script', cursive; /* Fonte romântica */
+  background-image: url('/img/background\ .jpg');
+  background-size: cover;
+  color: #5a5a5a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: #fff0f5; /* Fundo suave em tons de rosa */
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra para criar destaque */
+  max-width: 600px;
+  text-align: center;
+  border: 2px solid #ffc3c3; /* Borda fina e elegante */
+  width: 100%;
+}
+
+h1 {
+  font-size: 36px;
+  color: #d45a6e; /* Cor de destaque romântica */
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 20px;
+  line-height: 1.8;
+  color: #6b6b6b; /* Texto mais suave */
+  margin-bottom: 15px;
+}
+
+.button {
+  padding: 14px 28px;
+  background-color: #ff6b6b; /* Cor vibrante e romântica */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: 'Dancing Script', cursive;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.button:hover {
+  background-color: #ff3b3b;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Efeito de destaque ao passar o mouse */
+}
+
+.date-box {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  background: #ffe6e9; /* Fundo delicado */
+  border-radius: 15px;
+  border: 1px solid #ffb6b9; /* Borda suave */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  color: #555;
+  font-size: 18px;
+}
+
+.date-box p {
+  margin-bottom: 10px;
+  color: #d45a6e;
+  font-family: 'Dancing Script', cursive; /* Manter a fonte romântica */
+}
+
+a {
+  text-decoration: none; /* Remove o sublinhado */
+  color: inherit; /* Herda a cor do texto ao redor */
+}
+
+/* Media Queries para tornar responsivo */
+
+@media (max-width: 768px) {
   h1 {
-    font-size: 36px;
-    color: #d45a6e; /* Cor de destaque romântica */
-    margin-bottom: 20px;
+      font-size: 30px;
   }
-  
+
   p {
-    font-size: 20px;
-    line-height: 1.8;
-    color: #6b6b6b; /* Texto mais suave */
-    margin-bottom: 15px;
+      font-size: 18px;
   }
-  
+
   .button {
-    padding: 14px 28px;
-    background-color: #ff6b6b; /* Cor vibrante e romântica */
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 18px;
-    font-family: 'Dancing Script', cursive;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
   }
-  
-  .button:hover {
-    background-color: #ff3b3b;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Efeito de destaque ao passar o mouse */
+
+  .container {
+      padding: 20px;
   }
-  
-  .date-box {
-    display: none;
-    margin-top: 20px;
-    padding: 20px;
-    background: #ffe6e9; /* Fundo delicado */
-    border-radius: 15px;
-    border: 1px solid #ffb6b9; /* Borda suave */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    color: #555;
-    font-size: 18px;
+}
+
+@media (max-width: 480px) {
+  h1 {
+      font-size: 24px;
   }
-  
-  .date-box p {
-    margin-bottom: 10px;
-    color: #d45a6e;
-    font-family: 'Dancing Script', cursive; /* Manter a fonte romântica */
+
+  p {
+      font-size: 16px;
   }
-  a {
-    text-decoration: none; /* Remove o sublinhado */
-    color: inherit; /* Herda a cor do texto ao redor */
+
+  .button {
+      padding: 10px 20px;
+      font-size: 14px;
   }
-  
-  
+
+  .container {
+      padding: 15px;
+  }
+}
