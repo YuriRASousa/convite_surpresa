@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Álbum de Fotos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Great+Vibes&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #4B0E24;
+      color: #D1C5C8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .album-container {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .album-header {
+      margin-bottom: 20px;
+    }
+
+    .album-header h1 {
+      font-size: 36px;
+      color: #F2B6C4;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .gallery-item .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .caption {
+      opacity: 1;
+    }
+
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #modal-image {
+      width: auto;
+      height: auto;
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #modal-caption {
+      color: white;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    #modal button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .back-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #D6B1A4;
+      /* Cor do botão */
+      color: white;
+      border-radius: 20px;
+      font-size: 18px;
+      font-family: 'Dancing Script', cursive;
+      text-decoration: none;
+      /* Remove o sublinhado */
+      margin-top: 20px;
+      /* Espaço acima do botão */
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      /* Efeito de transição */
+    }
+
+    .back-button:hover {
+      background-color: #F2B6C4;
+      /* Cor ao passar o mouse */
+      transform: translateY(-3px);
+      /* Efeito de elevação ao passar o mouse */
+    }
+
+    .video-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .video-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .video-item video {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .video-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-item .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-item:hover .caption {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="album-container">
+    <div class="album-header">
+      <h1>Meu Álbum de Fotos</h1>
+    </div>
+    <div class="gallery">
+      <div class="gallery-item" onclick="showImage('../img/album/1.jpg', 'Foto 1')">
+        <img src="../img/album/1.jpg" alt="Foto 1">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/2.jpg', 'Foto 2')">
+        <img src="../img/album/2.jpg" alt="Foto 2">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/3.jpg', 'Foto 3')">
+        <img src="../img/album/3.jpg" alt="Foto 3">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/4.jpg', 'Foto 4')">
+        <img src="../img/album/4.jpg" alt="Foto 4">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/5.jpg', 'Foto 5')">
+        <img src="../img/album/5.jpg" alt="Foto 5">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/6.jpg', 'Foto 6')">
+        <img src="../img/album/6.jpg" alt="Foto 6">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/7.jpg', 'Foto 7')">
+        <img src="../img/album/7.jpg" alt="Foto 7">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/8.jpg', 'Foto 8')">
+        <img src="../img/album/8.jpg" alt="Foto 8">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/9.jpg', 'Foto 9')">
+        <img src="../img/album/9.jpg" alt="Foto 9">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/10.jpg', 'Foto 10')">
+        <img src="../img/album/10.jpg" alt="Foto 10">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/11.jpg', 'Foto 11')">
+        <img src="../img/album/11.jpg" alt="Foto 11">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/12.jpg', 'Foto 12')">
+        <img src="../img/album/12.jpg" alt="Foto 12">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/13.jpg', 'Foto 13')">
+        <img src="../img/album/13.jpg" alt="Foto 13">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/14.jpg', 'Foto 14')">
+        <img src="../img/album/14.jpg" alt="Foto 14">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/15.jpg', 'Foto 15')">
+        <img src="../img/album/15.jpg" alt="Foto 15">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/16.jpg', 'Foto 16')">
+        <img src="../img/album/16.jpg" alt="Foto 16">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/17.jpg', 'Foto 17')">
+        <img src="../img/album/17.jpg" alt="Foto 17">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/18.jpg', 'Foto 18')">
+        <img src="../img/album/18.jpg" alt="Foto 18">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/19.jpg', 'Foto 19')">
+        <img src="../img/album/19.jpg" alt="Foto 19">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/20.jpg', 'Foto 20')">
+        <img src="../img/album/20.jpg" alt="Foto 20">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/21.jpg', 'Foto 21')">
+        <img src="../img/album/21.jpg" alt="Foto 21">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/22.jpg', 'Foto 22')">
+        <img src="../img/album/22.jpg" alt="Foto 22">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/23.jpg', 'Foto 23')">
+        <img src="../img/album/23.jpg" alt="Foto 23">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/24.jpg', 'Foto 24')">
+        <img src="../img/album/24.jpg" alt="Foto 24">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/25.jpg', 'Foto 25')">
+        <img src="../img/album/25.jpg" alt="Foto 25">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/26.jpg', 'Foto 26')">
+        <img src="../img/album/26.jpg" alt="Foto 26">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/27.jpg', 'Foto 27')">
+        <img src="../img/album/27.jpg" alt="Foto 27">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/28.jpg', 'Foto 28')">
+        <img src="../img/album/28.jpg" alt="Foto 28">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/29.jpg', 'Foto 29')">
+        <img src="../img/album/29.jpg" alt="Foto 29">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/30.jpg', 'Foto 30')">
+        <img src="../img/album/30.jpg" alt="Foto 30">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/31.jpg', 'Foto 31')">
+        <img src="../img/album/31.jpg" alt="Foto 31">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/32.jpg', 'Foto 32')">
+        <img src="../img/album/32.jpg" alt="Foto 32">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/33.jpg', 'Foto 33')">
+        <img src="../img/album/33.jpg" alt="Foto 33">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/34.jpg', 'Foto 34')">
+        <img src="../img/album/34.jpg" alt="Foto 34">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/35.jpg', 'Foto 35')">
+        <img src="../img/album/35.jpg" alt="Foto 35">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/36.jpg', 'Foto 36')">
+        <img src="../img/album/36.jpg" alt="Foto 36">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/37.jpg', 'Foto 37')">
+        <img src="../img/album/37.jpg" alt="Foto 37">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/38.jpg', 'Foto 38')">
+        <img src="../img/album/38.jpg" alt="Foto 38">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/39.jpg', 'Foto 39')">
+        <img src="../img/album/39.jpg" alt="Foto 39">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/40.jpg', 'Foto 40')">
+        <img src="../img/album/40.jpg" alt="Foto 40">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/41.jpg', 'Foto 41')">
+        <img src="../img/album/41.jpg" alt="Foto 41">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/42.jpg', 'Foto 42')">
+        <img src="../img/album/42.jpg" alt="Foto 42">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/43.jpg', 'Foto 43')">
+        <img src="../img/album/43.jpg" alt="Foto 43">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/44.jpg', 'Foto 44')">
+        <img src="../img/album/44.jpg" alt="Foto 44">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/45.jpg', 'Foto 45')">
+        <img src="../img/album/45.jpg" alt="Foto 45">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/46.jpg', 'Foto 46')">
+        <img src="../img/album/46.jpg" alt="Foto 46">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/47.jpg', 'Foto 47')">
+        <img src="../img/album/47.jpg" alt="Foto 47">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/48.jpg', 'Foto 48')">
+        <img src="../img/album/48.jpg" alt="Foto 48">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/49.jpg', 'Foto 49')">
+        <img src="../img/album/49.jpg" alt="Foto 49">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/50.jpg', 'Foto 50')">
+        <img src="../img/album/50.jpg" alt="Foto 50">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/50.jpg', 'Foto 50')">
+        <img src="../img/album/50.jpg" alt="Foto 50">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/51.jpg', 'Foto 51')">
+        <img src="../img/album/51.jpg" alt="Foto 51">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/52.jpg', 'Foto 52')">
+        <img src="../img/album/52.jpg" alt="Foto 52">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/53.jpg', 'Foto 53')">
+        <img src="../img/album/53.jpg" alt="Foto 53">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/54.jpg', 'Foto 54')">
+        <img src="../img/album/54.jpg" alt="Foto 54">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/55.jpg', 'Foto 55')">
+        <img src="../img/album/55.jpg" alt="Foto 55">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/56.jpg', 'Foto 56')">
+        <img src="../img/album/56.jpg" alt="Foto 56">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/57.jpg', 'Foto 57')">
+        <img src="../img/album/57.jpg" alt="Foto 57">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/58.jpg', 'Foto 58')">
+        <img src="../img/album/58.jpg" alt="Foto 58">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/59.jpg', 'Foto 59')">
+        <img src="../img/album/59.jpg" alt="Foto 59">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/60.jpg', 'Foto 60')">
+        <img src="../img/album/60.jpg" alt="Foto 60">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/61.jpg', 'Foto 61')">
+        <img src="../img/album/61.jpg" alt="Foto 61">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/62.jpg', 'Foto 62')">
+        <img src="../img/album/62.jpg" alt="Foto 62">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/63.jpg', 'Foto 63')">
+        <img src="../img/album/63.jpg" alt="Foto 63">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/64.jpg', 'Foto 64')">
+        <img src="../img/album/64.jpg" alt="Foto 64">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/65.jpg', 'Foto 65')">
+        <img src="../img/album/65.jpg" alt="Foto 65">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/66.jpg', 'Foto 66')">
+        <img src="../img/album/66.jpg" alt="Foto 66">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/67.jpg', 'Foto 67')">
+        <img src="../img/album/67.jpg" alt="Foto 67">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/68.jpg', 'Foto 68')">
+        <img src="../img/album/68.jpg" alt="Foto 68">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/69.jpg', 'Foto 69')">
+        <img src="../img/album/69.jpg" alt="Foto 69">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/70.jpg', 'Foto 70')">
+        <img src="../img/album/70.jpg" alt="Foto 70">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/71.jpg', 'Foto 71')">
+        <img src="../img/album/71.jpg" alt="Foto 71">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/72.jpg', 'Foto 72')">
+        <img src="../img/album/72.jpg" alt="Foto 72">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/73.jpg', 'Foto 73')">
+        <img src="../img/album/73.jpg" alt="Foto 73">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/74.jpg', 'Foto 74')">
+        <img src="../img/album/74.jpg" alt="Foto 74">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/75.jpg', 'Foto 75')">
+        <img src="../img/album/75.jpg" alt="Foto 75">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/76.jpg', 'Foto 76')">
+        <img src="../img/album/76.jpg" alt="Foto 76">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/77.jpg', 'Foto 77')">
+        <img src="../img/album/77.jpg" alt="Foto 77">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/78.jpg', 'Foto 78')">
+        <img src="../img/album/78.jpg" alt="Foto 78">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/79.jpg', 'Foto 79')">
+        <img src="../img/album/79.jpg" alt="Foto 79">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/80.jpg', 'Foto 80')">
+        <img src="../img/album/80.jpg" alt="Foto 80">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/81.jpg', 'Foto 81')">
+        <img src="../img/album/81.jpg" alt="Foto 81">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/82.jpg', 'Foto 82')">
+        <img src="../img/album/82.jpg" alt="Foto 82">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/83.jpg', 'Foto 83')">
+        <img src="../img/album/83.jpg" alt="Foto 83">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/84.jpg', 'Foto 84')">
+        <img src="../img/album/84.jpg" alt="Foto 84">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/85.jpg', 'Foto 85')">
+        <img src="../img/album/85.jpg" alt="Foto 85">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/86.jpg', 'Foto 86')">
+        <img src="../img/album/86.jpg" alt="Foto 86">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/87.jpg', 'Foto 87')">
+        <img src="../img/album/87.jpg" alt="Foto 87">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/88.jpg', 'Foto 88')">
+        <img src="../img/album/88.jpg" alt="Foto 88">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/89.jpg', 'Foto 89')">
+        <img src="../img/album/89.jpg" alt="Foto 89">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/90.jpg', 'Foto 90')">
+        <img src="../img/album/90.jpg" alt="Foto 90">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/91.jpg', 'Foto 91')">
+        <img src="../img/album/91.jpg" alt="Foto 91">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/92.jpg', 'Foto 92')">
+        <img src="../img/album/92.jpg" alt="Foto 92">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/93.jpg', 'Foto 93')">
+        <img src="../img/album/93.jpg" alt="Foto 93">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/94.jpg', 'Foto 94')">
+        <img src="../img/album/94.jpg" alt="Foto 94">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/95.jpg', 'Foto 95')">
+        <img src="../img/album/95.jpg" alt="Foto 95">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/96.jpg', 'Foto 96')">
+        <img src="../img/album/96.jpg" alt="Foto 96">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/97.jpg', 'Foto 97')">
+        <img src="../img/album/97.jpg" alt="Foto 97">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/98.jpg', 'Foto 98')">
+        <img src="../img/album/98.jpg" alt="Foto 98">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/99.jpg', 'Foto 99')">
+        <img src="../img/album/99.jpg" alt="Foto 99">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/100.jpg', 'Foto 100')">
+        <img src="../img/album/100.jpg" alt="Foto 100">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/101.jpg', 'Foto 101')">
+        <img src="../img/album/101.jpg" alt="Foto 101">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/102.jpg', 'Foto 102')">
+        <img src="../img/album/102.jpg" alt="Foto 102">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/103.jpg', 'Foto 103')">
+        <img src="../img/album/103.jpg" alt="Foto 103">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/104.jpg', 'Foto 104')">
+        <img src="../img/album/104.jpg" alt="Foto 104">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/105.jpg', 'Foto 105')">
+        <img src="../img/album/105.jpg" alt="Foto 105">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/106.jpg', 'Foto 106')">
+        <img src="../img/album/106.jpg" alt="Foto 106">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/107.jpg', 'Foto 107')">
+        <img src="../img/album/107.jpg" alt="Foto 107">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/108.jpg', 'Foto 108')">
+        <img src="../img/album/108.jpg" alt="Foto 108">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/109.jpg', 'Foto 109')">
+        <img src="../img/album/109.jpg" alt="Foto 109">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/110.jpg', 'Foto 110')">
+        <img src="../img/album/110.jpg" alt="Foto 110">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/111.jpg', 'Foto 111')">
+        <img src="../img/album/111.jpg" alt="Foto 111">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/112.jpg', 'Foto 112')">
+        <img src="../img/album/112.jpg" alt="Foto 112">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/113.jpg', 'Foto 113')">
+        <img src="../img/album/113.jpg" alt="Foto 113">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/114.jpg', 'Foto 114')">
+        <img src="../img/album/114.jpg" alt="Foto 114">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/115.jpg', 'Foto 115')">
+        <img src="../img/album/115.jpg" alt="Foto 115">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/116.jpg', 'Foto 116')">
+        <img src="../img/album/116.jpg" alt="Foto 116">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/117.jpg', 'Foto 117')">
+        <img src="../img/album/117.jpg" alt="Foto 117">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/118.jpg', 'Foto 118')">
+        <img src="../img/album/118.jpg" alt="Foto 118">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/119.jpg', 'Foto 119')">
+        <img src="../img/album/119.jpg" alt="Foto 119">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/120.jpg', 'Foto 120')">
+        <img src="../img/album/120.jpg" alt="Foto 120">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/121.jpg', 'Foto 121')">
+        <img src="../img/album/121.jpg" alt="Foto 121">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/122.jpg', 'Foto 122')">
+        <img src="../img/album/122.jpg" alt="Foto 122">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/123.jpg', 'Foto 123')">
+        <img src="../img/album/123.jpg" alt="Foto 123">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/124.jpg', 'Foto 124')">
+        <img src="../img/album/124.jpg" alt="Foto 124">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/125.jpg', 'Foto 125')">
+        <img src="../img/album/125.jpg" alt="Foto 125">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/126.jpg', 'Foto 126')">
+        <img src="../img/album/126.jpg" alt="Foto 126">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/127.jpg', 'Foto 127')">
+        <img src="../img/album/127.jpg" alt="Foto 127">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/128.jpg', 'Foto 128')">
+        <img src="../img/album/128.jpg" alt="Foto 128">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/129.jpg', 'Foto 129')">
+        <img src="../img/album/129.jpg" alt="Foto 129">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/130.jpg', 'Foto 130')">
+        <img src="../img/album/130.jpg" alt="Foto 130">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/131.jpg', 'Foto 131')">
+        <img src="../img/album/131.jpg" alt="Foto 131">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/132.jpg', 'Foto 132')">
+        <img src="../img/album/132.jpg" alt="Foto 132">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/133.jpg', 'Foto 133')">
+        <img src="../img/album/133.jpg" alt="Foto 133">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/134.jpg', 'Foto 134')">
+        <img src="../img/album/134.jpg" alt="Foto 134">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/135.jpg', 'Foto 135')">
+        <img src="../img/album/135.jpg" alt="Foto 135">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/136.jpg', 'Foto 136')">
+        <img src="../img/album/136.jpg" alt="Foto 136">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/137.jpg', 'Foto 137')">
+        <img src="../img/album/137.jpg" alt="Foto 137">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/138.jpg', 'Foto 138')">
+        <img src="../img/album/138.jpg" alt="Foto 138">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/139.jpg', 'Foto 139')">
+        <img src="../img/album/139.jpg" alt="Foto 139">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/140.jpg', 'Foto 140')">
+        <img src="../img/album/140.jpg" alt="Foto 140">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/141.jpg', 'Foto 141')">
+        <img src="../img/album/141.jpg" alt="Foto 141">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/142.jpg', 'Foto 142')">
+        <img src="../img/album/142.jpg" alt="Foto 142">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/143.jpg', 'Foto 143')">
+        <img src="../img/album/143.jpg" alt="Foto 143">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/144.jpg', 'Foto 144')">
+        <img src="../img/album/144.jpg" alt="Foto 144">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/145.jpg', 'Foto 145')">
+        <img src="../img/album/145.jpg" alt="Foto 145">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/146.jpg', 'Foto 146')">
+        <img src="../img/album/146.jpg" alt="Foto 146">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/147.jpg', 'Foto 147')">
+        <img src="../img/album/147.jpg" alt="Foto 147">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/148.jpg', 'Foto 148')">
+        <img src="../img/album/148.jpg" alt="Foto 148">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/149.jpg', 'Foto 149')">
+        <img src="../img/album/149.jpg" alt="Foto 149">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/150.jpg', 'Foto 150')">
+        <img src="../img/album/150.jpg" alt="Foto 150">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/151.jpg', 'Foto 151')">
+        <img src="../img/album/151.jpg" alt="Foto 151">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/152.jpg', 'Foto 152')">
+        <img src="../img/album/152.jpg" alt="Foto 152">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/153.jpg', 'Foto 153')">
+        <img src="../img/album/153.jpg" alt="Foto 153">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/154.jpg', 'Foto 154')">
+        <img src="../img/album/154.jpg" alt="Foto 154">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/155.jpg', 'Foto 155')">
+        <img src="../img/album/155.jpg" alt="Foto 155">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/156.jpg', 'Foto 156')">
+        <img src="../img/album/156.jpg" alt="Foto 156">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/157.jpg', 'Foto 157')">
+        <img src="../img/album/157.jpg" alt="Foto 157">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/158.jpg', 'Foto 158')">
+        <img src="../img/album/158.jpg" alt="Foto 158">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/159.jpg', 'Foto 159')">
+        <img src="../img/album/159.jpg" alt="Foto 159">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/160.jpg', 'Foto 160')">
+        <img src="../img/album/160.jpg" alt="Foto 160">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/161.jpg', 'Foto 161')">
+        <img src="../img/album/161.jpg" alt="Foto 161">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/162.jpg', 'Foto 162')">
+        <img src="../img/album/162.jpg" alt="Foto 162">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/163.jpg', 'Foto 163')">
+        <img src="../img/album/163.jpg" alt="Foto 163">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/164.jpg', 'Foto 164')">
+        <img src="../img/album/164.jpg" alt="Foto 164">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/165.jpg', 'Foto 165')">
+        <img src="../img/album/165.jpg" alt="Foto 165">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/166.jpg', 'Foto 166')">
+        <img src="../img/album/166.jpg" alt="Foto 166">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/167.jpg', 'Foto 167')">
+        <img src="../img/album/167.jpg" alt="Foto 167">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/168.jpg', 'Foto 168')">
+        <img src="../img/album/168.jpg" alt="Foto 168">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/169.jpg', 'Foto 169')">
+        <img src="../img/album/169.jpg" alt="Foto 169">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/180.jpg', 'Foto 180')">
+        <img src="../img/album/180.jpg" alt="Foto 180">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/181.jpg', 'Foto 181')">
+        <img src="../img/album/181.jpg" alt="Foto 181">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/182.jpg', 'Foto 182')">
+        <img src="../img/album/182.jpg" alt="Foto 182">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/183.jpg', 'Foto 183')">
+        <img src="../img/album/183.jpg" alt="Foto 183">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/184.jpg', 'Foto 184')">
+        <img src="../img/album/184.jpg" alt="Foto 184">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/185.jpg', 'Foto 185')">
+        <img src="../img/album/185.jpg" alt="Foto 185">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/186.jpg', 'Foto 186')">
+        <img src="../img/album/186.jpg" alt="Foto 186">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/187.jpg', 'Foto 187')">
+        <img src="../img/album/187.jpg" alt="Foto 187">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/188.jpg', 'Foto 188')">
+        <img src="../img/album/188.jpg" alt="Foto 188">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/189.jpg', 'Foto 189')">
+        <img src="../img/album/189.jpg" alt="Foto 189">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/190.jpg', 'Foto 190')">
+        <img src="../img/album/190.jpg" alt="Foto 190">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/191.jpg', 'Foto 191')">
+        <img src="../img/album/191.jpg" alt="Foto 191">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/192.jpg', 'Foto 192')">
+        <img src="../img/album/192.jpg" alt="Foto 192">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/193.jpg', 'Foto 193')">
+        <img src="../img/album/193.jpg" alt="Foto 193">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/194.jpg', 'Foto 194')">
+        <img src="../img/album/194.jpg" alt="Foto 194">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/195.jpg', 'Foto 195')">
+        <img src="../img/album/195.jpg" alt="Foto 195">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/196.jpg', 'Foto 196')">
+        <img src="../img/album/196.jpg" alt="Foto 196">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/197.jpg', 'Foto 197')">
+        <img src="../img/album/197.jpg" alt="Foto 197">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/198.jpg', 'Foto 198')">
+        <img src="../img/album/198.jpg" alt="Foto 198">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/199.jpg', 'Foto 199')">
+        <img src="../img/album/199.jpg" alt="Foto 199">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/200.jpg', 'Foto 200')">
+        <img src="../img/album/200.jpg" alt="Foto 200">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/201.jpg', 'Foto 201')">
+        <img src="../img/album/201.jpg" alt="Foto 201">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/202.jpg', 'Foto 202')">
+        <img src="../img/album/202.jpg" alt="Foto 202">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/203.jpg', 'Foto 203')">
+        <img src="../img/album/203.jpg" alt="Foto 203">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/204.jpg', 'Foto 204')">
+        <img src="../img/album/204.jpg" alt="Foto 204">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/205.jpg', 'Foto 205')">
+        <img src="../img/album/205.jpg" alt="Foto 205">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/206.jpg', 'Foto 206')">
+        <img src="../img/album/206.jpg" alt="Foto 206">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/207.jpg', 'Foto 207')">
+        <img src="../img/album/207.jpg" alt="Foto 207">
+      </div>
+      <div class="gallery-item" onclick="showImage('../img/album/208.jpg', 'Foto 208')">
+        <img src="../img/album/208.jpg" alt="Foto 208">
+      </div>
+
+      <!-- Adicione mais fotos aqui -->
+    </div>
+
+    <div class="video-gallery">
+      <div class="video-item" onclick="showVideo('../img/album/1.mp4', 'Vídeo 1')">
+        <video src="../img/album/1.mp4" alt="Vídeo 1" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/3.mp4', 'Vídeo 2')">
+        <video src="../img/album/3.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/4.mp4', 'Vídeo 2')">
+        <video src="../img/album/4.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/5.mp4', 'Vídeo 2')">
+        <video src="../img/album/5.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/6.mp4', 'Vídeo 2')">
+        <video src="../img/album/6.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/7.mp4', 'Vídeo 2')">
+        <video src="../img/album/7.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/8.mp4', 'Vídeo 2')">
+        <video src="../img/album/8.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/9.mp4', 'Vídeo 2')">
+        <video src="../img/album/9.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/10.mp4', 'Vídeo 2')">
+        <video src="../img/album/10.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/11.mp4', 'Vídeo 2')">
+        <video src="../img/album/11.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <div class="video-item" onclick="showVideo('../img/album/12.mp4', 'Vídeo 2')">
+        <video src="../img/album/12.mp4" alt="Vídeo 2" controls></video>
+      </div>
+      <!-- Adicione mais vídeos aqui -->
+    </div>
+
+    <div>
+      <a href="../index.html" class="back-button">Voltar</a>
+    </div>
+  </div>
+
+  <div id="modal">
+    <div style="position:relative; text-align:center;">
+      <img id="modal-image" src="" alt="">
+      <p id="modal-caption"></p>
+      <button onclick="closeModal()">X</button>
+    </div>
+  </div>
+
+  <script>
+    function showImage(src, caption) {
+      const modal = document.getElementById('modal');
+      const modalImage = document.getElementById('modal-image');
+      const modalCaption = document.getElementById('modal-caption');
+
+      modalImage.src = src;
+      modalCaption.textContent = caption;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+    }
+  </script>
+
+</body>
+
+</html>
