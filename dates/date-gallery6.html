@@ -131,19 +131,29 @@
     </div>
 
     <script>
-        function calculateDaysSince(dateString) {
-            const firstDate = new Date(dateString);
-            const today = new Date();
-            const differenceInTime = today - firstDate;
-            const differenceInDays = Math.floor(differenceInTime / (1000 * 60 * 60 * 24));
-            return differenceInDays;
-        }
+    function getToday() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
 
-        const dateOfFirstDate = '2024-08-18'; // Data do primeiro date
-        const daysCounterElement = document.getElementById('days-counter');
+function calculateDaysSince(dateString) {
+    const firstDate = new Date(dateString);
+    const today = getToday(); // Garante o horário zero
+    const differenceInTime = today - firstDate;
+    const differenceInDays = Math.floor(differenceInTime / (1000 * 60 * 60 * 24));
+    return differenceInDays;
+}
 
-        const daysSince = calculateDaysSince(dateOfFirstDate);
-        daysCounterElement.textContent = `${daysSince} dias desde o nosso primeiro encontro!`;
+function updateCounter() {
+    const dateOfFirstDate = '2024-08-18';
+    const daysCounterElement = document.getElementById('days-counter');
+    const daysSince = calculateDaysSince(dateOfFirstDate);
+    daysCounterElement.textContent = `${daysSince} dias desde o nosso primeiro encontro!`;
+}
+
+// Atualiza imediatamente e configura para atualizar diariamente
+updateCounter();
+
     </script>
 </body>
 
