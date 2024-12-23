@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Despedida</title>
-    <link
-        href=>
     <style>
         /* Reset de margens e padding */
         * {
@@ -90,13 +88,19 @@
             transform: translateY(-3px);
             /* Efeito de elevação ao passar o mouse */
         }
+
+        .days-counter {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #fafafa;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1>Voce realmente foi incrivel</h1>
+            <h1>Você realmente foi incrível</h1>
         </header>
         <div class="message">
             <p>Leticia,</p>
@@ -122,8 +126,25 @@
             </p>
             <p>Com amor, Yuyu</p>
         </div>
+        <div class="days-counter" id="days-counter">Carregando...</div>
         <a href="../index.html" class="back-button">Voltar</a>
     </div>
+
+    <script>
+        function calculateDaysSince(dateString) {
+            const firstDate = new Date(dateString);
+            const today = new Date();
+            const differenceInTime = today - firstDate;
+            const differenceInDays = Math.floor(differenceInTime / (1000 * 60 * 60 * 24));
+            return differenceInDays;
+        }
+
+        const dateOfFirstDate = '2024-08-18'; // Data do primeiro date
+        const daysCounterElement = document.getElementById('days-counter');
+
+        const daysSince = calculateDaysSince(dateOfFirstDate);
+        daysCounterElement.textContent = `${daysSince} dias desde o nosso primeiro encontro!`;
+    </script>
 </body>
 
 </html>
