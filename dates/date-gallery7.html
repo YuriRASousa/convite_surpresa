@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despedida</title>
+    <style>
+        /* Reset de margens e padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Fonte legível */
+            background: #4B0E24;
+            /* Fundo vinho escuro */
+            color: #D1C5C8;
+            /* Texto em cinza claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            /* Fundo semi-transparente */
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            /* Sombra mais intensa */
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #D6B1A4;
+            /* Borda dourada suave */
+        }
+
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            /* Fonte romântica para o título */
+            font-size: 36px;
+            color: #F2B6C4;
+            /* Rosa suave */
+        }
+
+        header p {
+            font-size: 18px;
+            color: #D1C5C8;
+            /* Texto secundário em cinza claro */
+            margin-bottom: 30px;
+        }
+
+        .message {
+            font-size: 20px;
+            color: #e2d6d9;
+            /* Rosa suave */
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #D6B1A4;
+            /* Cor do botão */
+            color: white;
+            border-radius: 20px;
+            font-size: 18px;
+            font-family: 'Dancing Script', cursive;
+            text-decoration: none;
+            /* Remove o sublinhado */
+            margin-top: 20px;
+            /* Espaço acima do botão */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            /* Efeito de transição */
+        }
+
+        .back-button:hover {
+            background-color: #F2B6C4;
+            /* Cor ao passar o mouse */
+            transform: translateY(-3px);
+            /* Efeito de elevação ao passar o mouse */
+        }
+
+        .days-counter {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #fafafa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Para Yuri</h1>
+        </header>
+        <div class="message">
+            <p>Querido Yuyu,</p>
+            <p>
+                Gostaria muito que você estivesse lendo isso em um papel pautado, porém você decidiu ir para a sua
+                terrinha, o que me impossibilitou de te dizer essas palavras a moda antiga e de forma dramática. Mas eu
+                espero que uma mensagem no whatsapp também tenha importância para você kkkkkk
+            </p>
+            <p>
+                Nesses últimos dias tenho refletido muito no quanto a minha vida mudou esse ano e o tanto de gente que
+                saiu, entrou e voltou para ela. E com certeza eu não poderia deixar de pensar em você.
+
+            </p>
+            <p>
+                Apesar de toda nossa pequena história e desentendimentos, você foi uma das pessoas que me trouxe e me
+                acompanhou nos melhores momentos do meu ano, e por isso eu sou extremamente grata.
+
+            </p>
+            <p>
+                Yuri, eu nunca vou me cansar de dizer o quão incrível você é, você é realmente um cara legal, uma pessoa
+                boa de se ter por perto. Você é na maior parte das vezes uma companhia leve no ambiente de trabalho, e
+                uma pessoa completamente sem filtros kkkkk é um privilégio poder conviver com uma pessoa tão verdadeira
+                quanto você, dentro e fora do escritório.
+
+            </p>
+            <p>
+                Você foi pra mim um cara fofo, educado, carinhoso, sempre muito amoroso, e claro, MUITO engraçado, amo
+                como você consegue me alegrar sem fazer nenhum esforço, só sendo quem você é.
+
+            </p>
+            <p>Viver com você nesses últimos meses foi incrível, vou guardar pra sempre em meu quarto e em minhas
+                memoria suas cartas e suas risadas.
+                Espero que em 2025 a gente continue tendo histórias boas do jeito que Deus e nossos corações nos
+                permitam, você é uma pessoa incrível de se ter por perto.
+            </p>
+            <p>
+                Muito obrigada por ser você. <br>
+                Te amo muito. <br>
+                Feliz ano novo
+            </p>
+        </div>
+        <div class="days-counter" id="days-counter">Carregando...</div>
+        <a href="../index.html" class="back-button">Voltar</a>
+    </div>
+
+    <script>
+        function getToday() {
+            const now = new Date();
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        }
+
+        function calculateDaysSince(dateString) {
+            const firstDate = new Date(dateString);
+            const today = getToday(); // Garante o horário zero
+            const differenceInTime = today - firstDate;
+            const differenceInDays = Math.floor(differenceInTime / (1000 * 60 * 60 * 24));
+            return differenceInDays;
+        }
+
+        function updateCounter() {
+            const dateOfFirstDate = '2024-08-18';
+            const daysCounterElement = document.getElementById('days-counter');
+            const daysSince = calculateDaysSince(dateOfFirstDate);
+            daysCounterElement.textContent = `${daysSince} dias desde o nosso primeiro encontro!`;
+        }
+
+        // Atualiza imediatamente e configura para atualizar diariamente
+        updateCounter();
+
+    </script>
+</body>
+
+</html>
